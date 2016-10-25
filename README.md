@@ -1,81 +1,181 @@
-# lesson-9
+# lesson-10
 
-#MySQL
+##MySQL commands to remember:
 
-##Часть 1. 
-Установить MySQL
+`CREATE DATABASE...`
+`ALTER DATABASE...`
+`DROP DATABASE...`
 
-Работа с консолью: 
-( XAMPP does not have a pre build console to run php or mysql commands, so, you have to add to windows PATH environment variables, these 2: ;C:\xampp\mysql\bin;C:\xampp\php; )
+`CREATE TABLE...`
+`ALTER TABLE...`
+`TRUNCATE TABLE...`
+`DROP TABLE...`
 
-1. Установить пароль для root-юзера ( XAMP - https://www.apachefriends.org/ru/faq_windows.html )
+`INSERT...`
+`SELECT... (WHERE... ORDER BY... LIMIT...)`
+`UPDATE... (WHERE... ORDER BY... LIMIT...)`
+`DELETE... (WHERE... ORDER BY... LIMIT...)`
 
-2. Создать базу данных для своего проекта ( utf8mb4 - http://dev.mysql.com/doc/refman/5.7/en/charset-database.html )
+##Joins 
 
-3. Создать юзера для своего проекта и предоставить права для использования базы (#2) ( http://dev.mysql.com/doc/refman/5.7/en/adding-users.html )
+`...LEFT JOIN...`
 
-4. Создать таблицы InnoDB в бд (#2) с такой структурой:
-( * создание таблиц: http://dev.mysql.com/doc/refman/5.7/en/create-table.html )
-Таблицы:
+```
+SELECT products.`id`, products.`title`, categories.`id`, categories.`title`  
+FROM `products` 
+LEFT JOIN `categories` ON `categories`.`id` = `products`.`category_id`
+```
 
-1. `categories`:<br/>
-`id`: primary, autoincrement<br/>
-`title`: varchar 255<br/>
+```
+SELECT u.name, u.`email`, u.`age`, g.`name`  
+FROM `users` as u 
+LEFT JOIN `geonames_ua` as g ON u.`city_id` = g.`id`
+WHERE g.`feature2` IN ('PPLC','PPLA','PPLA2','PPLA3','PPLA4') 
+	AND u.`email` LIKE '%@gmail.com'
+	AND u.`age` BETWEEN 25 AND 55
+ORDER BY g.`population` DESC
+LIMIT 10
+```
 
-2. `products`:<br/>
-`id`: primary, autoincrement<br/>
-`title`: varchar 255<br/>
-`description`: text 5000<br/>
-`price`: integer 11<br/>
-`category_id`: integer 11 (id-шка категории)<br/>
+```
+SELECT u.name, u.`email`, u.`age`, g.`name`  
+FROM `users` as u 
+LEFT JOIN `geonames_ua` as g ON u.`city_id` = g.`id`
+WHERE g.`id` IS NULL
+LIMIT 10
+```
 
-3. `users`:<br/>
-`id`: primary, autoincrement<br/>
-`name`: varchar 155<br/>
-`role`: enum (‘admin’,‘customer’)<br/>
-`email`: varchar 155<br/>
-`password`: varchar 255<br/>
-`login`: varchar 255<br/>
-`last_activity`: datetime<br/>
+`...RIGHT JOIN...`
 
-4. `orders`:<br/>
-`id`: primary, autoincrement<br/>
-`user_id`: integer 11 (id-шка юзера)<br/>
-`product_id`: integer 11 (id-шки продукта)<br/>
-`created_at`: datetime<br/>
-`delivered_at`: datetime default: null<br/>
-`status`: enum (‘open’,’in progress’,’closed’)<br/>
-`total_price`: integres 11<br/>
+```
+SELECT products.`id`, products.`title`, categories.`id`, categories.`title`  
+FROM `products` 
+RIGHT JOIN `categories` ON `categories`.`id` = `products`.`category_id`
+```
 
-5. `reviews`:<br/>
-`id`: primary, autoincrement<br/>
-`user_id`: integer 11 (id-шка юзера)<br/>
-`product_id`: integer 11 (id-шки продукта)<br/>
-`created_at`: datetime<br/>
-`text`: text 5000<br/>
-`rating`: smallInt<br/>
+`...INNER JOIN...`
 
-Установить phpMyAdmin ( на XAMPP есть ):
+```
+SELECT products.`id`, products.`title`, categories.`id`, categories.`title`  
+FROM `products` 
+INNER JOIN `categories` ON `categories`.`id` = `products`.`category_id`
 
-1. Включить режим аутентификации через логин форму: http://stackoverflow.com/questions/17759776/how-to-get-login-option-for-phpmyadmin-in-xampp
+```
 
-2. Ознакомиться с интерфейсом
+```
+SELECT u.name, u.`email`, u.`age`, g.`name`  
+FROM `users` as u 
+INNER JOIN `geonames_ua` as g ON u.`city_id` = g.`id`
+WHERE g.`id` IS NULL
+LIMIT 10
+```
 
-##Часть 2. 
+`...OUTER JOIN...`
 
-Подключить базу к проекту.<br/>
-Создать php-скрипт чтобы заполнить таблицы произвольными данными (fake data).<br/>
-Создать роут для каталога и вывести категории (ссылками) и каждая категория должна вести на страницу с ее товарами.<br/> 
-Создать роут для товаров. Добавить кнопку покупки для товаров в каталоге и на странице товара.<br/>
-Создать механизм аутентификации юзеров на основе бд: `users` (вместо файлов, как раньше): страницу логина и регистрации.<br/> 
-Создать механизм корзины на основе сессии. Создать роут для корзины, где выводить добавленные в нее товары и кнопку оформить заказ.<br/>
-Если юзер не залогинянный, показывать форму для контактных данных. Иначе, сразу оформлять и брать данные юзера с бд.<br/>
-Оформление - бутстрап.<br/>
+```
+SELECT products.`id`, products.`title`, categories.`id`, categories.`title`  
+FROM `products` 
+LEFT OUTER JOIN `categories` ON `categories`.`id` = `products`.`category_id`
+```
 
-##Часть 3.
+```
+SELECT u.name, u.`email`, u.`age`, g.`name`  
+FROM `users` as u 
+LEFT OUTER JOIN `geonames_ua` as g ON u.`city_id` = g.`id`
+LIMIT 10
+```
 
-Создать CRUD админку с аутентификацией:<br/>
-Каталог: категории и товары<br/>
-Юзеры<br/>
-Отзывы<br/>
-Заказы<br/>
+
+##Unions
+
+`...UNION...`
+```
+(SELECT * FROM `categories`)
+UNION 
+(SELECT * FROM `special_categories`)
+```
+
+
+##Indexes 
+
+```
+SHOW INDEXES IN `users`
+```
+
+```
+DROP INDEX email_age ON `users`
+```
+
+`PRIMARY KEY` 
+
+`UNIQUE` 
+
+`INDEX`
+
+```
+CREATE INDEX feature2 ON `geonames_ua`(`feature2`);
+```
+
+`Composite Indexes` (up to 16 columns)
+
+```
+CREATE INDEX age_email_id_name ON `users`(`age`,`email`,`id`,`name`); 
+```
+
+`FULLTEXT`
+`Spatial Indexes`
+
+```
+SELECT u.`id`, u.`name`, u.`email`, u.`age`
+FROM `users` as u 
+WHERE u.`age` BETWEEN 25 AND 55
+	AND u.`email` LIKE '%@gmail.com'
+ORDER BY u.`age` DESC
+LIMIT 50
+```
+
+```
+SELECT u.`id`, u.`name`, u.`email`, u.`age`, g.`id`, g.`name` 
+FROM `users` as u 
+LEFT JOIN `geonames_ua` as g ON u.`city_id` = g.`id`
+WHERE g.`feature2` IN ('PPLC','PPLA','PPLA2','PPLA3','PPLA4') 
+	AND u.`email` LIKE '%@gmail.com'
+	AND u.`age` BETWEEN 25 AND 55
+ORDER BY u.`age` DESC
+LIMIT 50
+```
+
+`EXPLAIN...`
+http://www.slideshare.net/billkarwin/how-to-design-indexes-really (Star system - slide #39)
+
+##Loading big Databases
+
+MySQL command: ``LOAD DATA INFILE 'UA.txt' INTO TABLE `lesson9`.`geonames_ua`;``
+
+http://dev.mysql.com/doc/refman/5.7/en/load-data.html
+
+
+CLI command: ``mysqlimport -h host -u username -ppassword --fields-terminated-by='\t' --lines-terminated-by='\n' --columns='geonameid, name, ansiname, alternames, latitude, longitude, feature_class, feature_code, country_code, cc2, admin1_code, admin2_code, population, elevation, gtopo30, timezone, modification_date' --local database /path/geonames.txt``
+
+http://dev.mysql.com/doc/refman/5.7/en/mysqlimport.html
+
+* DataBase is used: http://www.geonames.org/
+http://download.geonames.org/export/dump/
+http://www.geonames.org/export/codes.html
+
+
+
+##Groups & Agrigate Functions
+
+`...GROUP BY...(HAVING...)`
+`...AVG()...`
+`...COUNT()...`
+`...MAX()...`
+`...MIN()...`
+`...SUM()...`
+
+`...DISTINCT...`
+
+##Storage Procedures
+
+##Views

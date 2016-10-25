@@ -63,7 +63,8 @@ function insertRow( $db, &$insertedIds, $table ) {
 			'login' => randVal('logins'),
 			'last_activity' => "'".rand(2015,2016).'-'.rand(1,12).'-'.rand(1,28).' '.rand(0,23).':'.rand(0,59).':'.rand(0,59)."'",
 			'birth' => "'".rand(1980,2000).'-'.rand(1,12).'-'.rand(1,28).' '.rand(0,23).':'.rand(0,59).':'.rand(0,59)."'",
-			'age' => rand(10,90)
+			'age' => rand(10,90),
+			'city_id' => rand(1,40609),
 		];
 	}
 	else if( $table == 'orders' ) {
@@ -102,9 +103,9 @@ function fakeDataInsert( $db, &$insertedIds, $table, $amount ) {
 	}
 }
 
-fakeDataInsert( $db, $insertedIds, 'categories', 10 );
-fakeDataInsert( $db, $insertedIds, 'products', 500 );
-fakeDataInsert( $db, $insertedIds, 'users', 100 );
-fakeDataInsert( $db, $insertedIds, 'orders', 300 );
-fakeDataInsert( $db, $insertedIds, 'reviews', 200 );
+fakeDataInsert( $db, $insertedIds, 'categories', 5 );
+fakeDataInsert( $db, $insertedIds, 'products', 50 );
+fakeDataInsert( $db, $insertedIds, 'users', 100000 );
+fakeDataInsert( $db, $insertedIds, 'orders', 30 );
+fakeDataInsert( $db, $insertedIds, 'reviews', 20 );
 
