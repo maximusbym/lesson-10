@@ -12,8 +12,11 @@
 `DROP TABLE...`
 
 `INSERT...`
+
 `SELECT... (WHERE... ORDER BY... LIMIT...)`
+
 `UPDATE... (WHERE... ORDER BY... LIMIT...)`
+
 `DELETE... (WHERE... ORDER BY... LIMIT...)`
 
 ##Joins 
@@ -123,6 +126,7 @@ CREATE INDEX age_email_id_name ON `users`(`age`,`email`,`id`,`name`);
 ```
 
 `FULLTEXT`
+
 `Spatial Indexes`
 
 ```
