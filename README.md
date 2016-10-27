@@ -82,22 +82,6 @@ WHERE g.`id` IS NULL
 LIMIT 10
 ```
 
-`...OUTER JOIN...`
-
-```
-SELECT products.`id`, products.`title`, categories.`id`, categories.`title`  
-FROM `products` 
-LEFT OUTER JOIN `categories` ON `categories`.`id` = `products`.`category_id`
-```
-
-```
-SELECT u.name, u.`email`, u.`age`, g.`name`  
-FROM `users` as u 
-LEFT OUTER JOIN `geonames_ua` as g ON u.`city_id` = g.`id`
-LIMIT 10
-```
-
-
 ##Unions
 
 `...UNION...`
