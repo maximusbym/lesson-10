@@ -165,6 +165,7 @@ http://www.geonames.org/export/codes.html
 ##Groups & Agrigate Functions
 
 `...GROUP BY...(HAVING...)`
+`In SELECT statement should be the same fields as in the GROUP BY AND Agrigate Functions`
 
 ```
 SELECT `name` FROM `users` GROUP BY `name`
